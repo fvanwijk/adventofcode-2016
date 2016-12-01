@@ -3,8 +3,13 @@ require('./helpers').getFile(1, input => {
     return Math.abs(coord.x) + Math.abs(coord.y);
   }
 
-  const data = input.split(', ');
-  const result = data.reduce((pos, direction) => {
+  const walks = {
+    0: { x: 0, y: 1 },
+    90: { x: 1, y: 0 },
+    180: { x: 0, y: -1 },
+    270: { x: -1, y: 0 },
+  };
+  const result = input.split(', ').reduce((pos, direction) => {
     const [ match, bearing, steps ] = direction.match(/([LR])(\d+)/);
 
     // Determine new bearing
@@ -12,20 +17,9 @@ require('./helpers').getFile(1, input => {
 
     // Walk
     for (let i = 0; i < steps; i++) {
-      switch (pos.bearing) {
-        case 0:
-          pos.y++;
-          break;
-        case 90:
-          pos.x++;
-          break;
-        case 180:
-          pos.y--;
-          break;
-        case 270:
-          pos.x--;
-          break;
-      }
+      let walk = walks[pos.bearing];
+      pos.x += walk.x;
+      pos.y += walk.y;
 
       // Check if already visited this block
       let newPos = `${pos.x}-${pos.y}`;
