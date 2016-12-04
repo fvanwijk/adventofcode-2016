@@ -46,5 +46,7 @@ require('./helpers').getFile(2, input => {
   });
 
   console.log('The first bathroom code is:', code);
+  // 95549
   console.log('The second bathroom code is:', code2);
+  // D87AD
 });
