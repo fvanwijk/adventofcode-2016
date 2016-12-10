@@ -6,8 +6,8 @@ require('./helpers').getFile(7, input => {
     const groupMatches = matches.reduce((acc2, wordGroup, i) => {
 
       // Validates ABBA match (intermediate result)
-      const hasAbba = wordGroup.match(/([a-z])((?!\1).)\2\1/g);
-      acc2.abba[i % 2] = i % 2 ? (acc2.abba[i % 2] && (hasAbba == null)) : (acc2.abba[i % 2] || (hasAbba != null));
+      const hasAbba = wordGroup.search(/([a-z])((?!\1).)\2\1/g) != -1;
+      acc2.abba[i % 2] = i % 2 ? (acc2.abba[i % 2] && !hasAbba) : (acc2.abba[i % 2] || hasAbba);
 
       // Matches ABA in supernet or hypernet and adds to the respective list
       const abaMatches = [];
