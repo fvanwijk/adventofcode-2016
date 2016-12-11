@@ -5,6 +5,11 @@ require('./helpers').getFile(8, input => {
     return arr;
   }
 
+  /*  input = `rect 3x2
+   rotate column x=1 by 1
+   rotate row y=0 by 4
+   rotate column x=1 by 1`;*/
+
   const height = 6;
   const width = 50;
   const initArray = [];
@@ -40,7 +45,10 @@ require('./helpers').getFile(8, input => {
   }, initArray);
 
   const count = keypad.reduce((count, row) => row.reduce((x, y) => x + y, count), 0);
+  const readableKeyPad = keypad.map(x => x.map(y => y ? '*' : ' ').join(''));
 
   console.log('The code is:', count);
   // 128
+  console.log(readableKeyPad.join('\n'));
+  // EOARGPHYAO
 });
