@@ -1,6 +1,13 @@
 require('./helpers').getFile(10, input => {
   const agents = {};
 
+//   input = `value 5 goes to bot 2
+// bot 2 gives low to bot 1 and high to bot 0
+// value 3 goes to bot 1
+// bot 1 gives low to output 1 and high to bot 0
+// bot 0 gives low to output 2 and high to output 0
+// value 2 goes to bot 2`;
+
   function init(id, type) {
     const i = `${id}-${type}`;
     if (!agents[i]) { agents[i] = { id, type, rules: [], values: [], matches: [] }; }
@@ -62,8 +69,15 @@ require('./helpers').getFile(10, input => {
   for (id in agents) {
     found = containsMatch(agents[id], 61, 17);
     if (found) {
-      console.log(agents[id].id);
+      console.log('Bot that passes 61 and 17: ', agents[id].id);
+      // 113
       break;
     }
   }
+
+  function outputVal(i) {
+    return agents[`${i}-output`].values[0];
+  }
+  console.log('First three outputs multiplied: ', outputVal(0) * outputVal(1) * outputVal(2));
+  // 12803
 });
