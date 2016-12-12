@@ -1,25 +1,31 @@
 require('./helpers').getFile(9, input => {
-  const output = [];
+  function decompress(str, noNesting) {
+    let output = 0;
+    const markerIndex = str.indexOf('(');
+    if (~markerIndex) {
+      output += markerIndex; // Add first x normal chars
+      const fullTail = str.slice(markerIndex);
+      // marker + tail = fullTail
+      const [match, charCount, repeatCount, tail] = fullTail.match(/\((\d+)x(\d+)\)(.*)/);
 
-  for(let i = 0; i < input.length; i++) {
-    const char = input[i];
-    if (char == '(') {
-      // Read marker block and copy code to output
-      const endMarkerIndex = input.indexOf(')', i) + 1;
-      const marker = input.substring(i, endMarkerIndex);
-      const [match, charCount, repeatCount] = marker.match(/\((\d+)x(\d+)\)/);
-      const repeatGroup = input.substr(endMarkerIndex, charCount);
-      for(j = 0;j < repeatCount;j++) {
-        output.push(repeatGroup);
+      // slice + next = tail
+      const next = tail.slice(charCount);
+      const slice = tail.substr(0, charCount);
+
+      for(let j = 0;j < repeatCount;j++) {
+        output += noNesting ? slice.length : decompress(slice);
       }
-
-      // Move cursor forward to continue
-      i += marker.length + (charCount-1);
+      output += decompress(next, noNesting);
     } else {
-      output.push(char);
+      output += str.length;
     }
+
+    return output;
   }
 
-  console.log('The length is:', output.length);
+  console.log('The initial length is:', decompress(input, true));
   // 183269
+
+  console.log('The length is:', decompress(input)); // Watch out, takes a while...
+  // 11317278863
 });
